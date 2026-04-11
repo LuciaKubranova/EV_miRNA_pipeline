@@ -1,0 +1,40 @@
+#!/bin/bash
+#stiahneme si trimmomatic JAR, ak ho ešte nemáme
+sudo apt update
+sudo apt install trimmomatic
+
+#vytvoríme nový directory pre orezané ready
+mkdir -p Trimmed_Reads
+
+#nastavíme premennú s názvom súboru s adaptérmi
+adapterfile="adapters.txt"
+
+#definujeme si premenné
+input="datafile.fastq"
+output="Trimmed_Reads/datafile_trimmed.fastq"
+output_QC="QC_results"
+
+#nastavíme si trimming parametre
+PHRED_TRIM=15
+LEN_FILTER=17
+RD_LENGTH=70
+
+#zistíme, kde sú nástroje v systéme
+FASTQC=$(which fastqc)
+TRIMMOMATIC=$(which trimmomatic)
+TRIMMOMATIC_JAR="/usr/share/java/trimmomatic.jar"
+
+#spustíme Trimmomatic na orezanie readov
+java -jar "$TRIMMOMATIC_JAR" SE -phred33 \
+    "$input" \
+    "$output" \
+    ILLUMINACLIP:"$adapterfile":2:30:5:3:true \
+    CROP:"$RD_LENGTH" \
+    LEADING:3 \
+    TRAILING:3 \
+    SLIDINGWINDOW:4:"$PHRED_TRIM" \
+    MINLEN:"$LEN_FILTER"
+
+
+#spustíme FastQC na orezané ready a uložíme výsledky do vytvoreného directory
+fastqc "$output" -o "$output_QC"/

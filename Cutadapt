@@ -1,0 +1,25 @@
+#!/bin/bash
+#stiahneme si cutadapt, ak ho ešte nemáme
+sudo apt install cutadapt
+
+#vytvoríme si nový directory pre orezané ready
+mkdir -p Trimmed_Reads
+
+#nastavíme premenné
+input="datafile.fastq"
+output="Trimmed_Reads/datafile_trimmed_cutadapt.fastq"
+output_QC="QC_results"
+
+#vypíšeme si použitý adaptér
+adapter="TGGAATTCTCGGGTGCCAAGG"
+
+#spustíme Cutadapt na orezanie adaptéra
+cutadapt -a "$adapter" \
+    -q 15 \
+    -m 17 \
+    -M 30 \
+    -o "$output" \
+    "$input"
+
+#spustíme FastQC na orezané ready a uložíme výsledky do vytvoreného directory
+fastqc "$output" -o "$output_QC"/

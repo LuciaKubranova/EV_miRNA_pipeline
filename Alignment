@@ -1,0 +1,29 @@
+#!/bin/bash
+#stiahnutie bowtie, ak ešte nie je
+sudo apt install bowtie
+bowtie --version
+
+#vytvorenie nového directory pre zarovnané ready
+mkdir -p Aligned_Reads
+
+#odzipovanie referenčný genom
+gunzip reference_genome.fa.gz
+
+#indexovanie referenčný genom
+bowtie-build reference_genome.fa reference_genome_index
+
+#alignment pomocou bowtie
+bowtie -v 1 -k 1 --best -S -x reference_genome_index Trimmed_Reads/SHbasic_trimmed.fastq.gz > Aligned_Reads/SHbasic_aligned.sam
+
+#inštalácia samtools, ak ešte nie je
+sudo apt install samtools
+samtools --version
+
+#konverzia SAM do BAM formátu
+samtools view -bS Aligned_Reads/SHbasic_aligned.sam > Aligned_Reads/SHbasic_aligned.bam
+
+#zoradenie BAM súboru
+samtools sort Aligned_Reads/SHbasic_aligned.bam -o Aligned_Reads/SHbasic_aligned_sorted.bam
+
+#indexovanie zoradeného BAM súboru
+samtools index Aligned_Reads/SHbasic_aligned_sorted.bam

@@ -1,0 +1,27 @@
+#!/bin/bash
+#nastavíme premennú s názvom súboru
+datafile="datafile"
+
+#na overenie, že ide o náš súbor použijeme command head, ktorý nám vypíše prvých 10 riadkov súboru
+head $datafile.fastq
+
+#na zistenie počtu readov v súbore použijeme command grep na nájdenie @ a wc -l na spočítanie tých riadkov
+grep "@" $datafile.fastq | wc -l
+
+#vytvoríme si nový directory pre QC výsledky
+mkdir QC_results
+
+#spustíme FastQC na náš súbor a uložíme výsledky do vytvoreného directory
+fastqc $datafile -o QC_results/
+
+#ak chceme vidieť výsledky v prehliadači, môžeme otvoriť HTML súbor z QC_results
+xdg-open QC_results/${datafile}_fastqc.html
+
+#ak chceme využiť fastQC pre viac súborov naraz, môžeme použiť for loop
+for file in *.fastq
+do
+    fastqc $file -o QC_results/
+done
+
+#nakoniec môžeme spraviť sumarizáciu výsledkov pomocou MultiQC
+multiqc QC_results/ -o QC_results/summary/
