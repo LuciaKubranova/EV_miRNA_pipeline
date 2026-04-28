@@ -1,12 +1,12 @@
 #!/bin/bash
 #nastavíme premennú s názvom súboru
-datafile="datafile"
+SHbasic_1fastq.gz="datafile"
 
 #na overenie, že ide o náš súbor použijeme command head, ktorý nám vypíše prvých 10 riadkov súboru
-head $datafile.fastq
+head $datafile
 
 #na zistenie počtu readov v súbore použijeme command grep na nájdenie @ a wc -l na spočítanie tých riadkov
-grep "@" $datafile.fastq | wc -l
+grep "@" $datafile | wc -l
 
 #vytvoríme si nový directory pre QC výsledky
 mkdir QC_results
