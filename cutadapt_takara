@@ -14,8 +14,9 @@ cutadapt \
   -a "A{10}" \
   -a "G{10}" \
   --trim-n \
+  -u \
   -q 20 \
-  -m 17 -M 30 \
+  -m 15 -M 30 \
   --discard-untrimmed \
   -o "$output" \
   "$input"
