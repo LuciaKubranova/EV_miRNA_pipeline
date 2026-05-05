@@ -15,9 +15,12 @@ adapter="TGGAATTCTCGGGTGCCAAGG"
 
 #spustíme Cutadapt na orezanie adaptéra
 cutadapt -a "$adapter" \
-    -q 15 \
-    -m 17 \
+    --trim-n \
+    -u 1 \
+    -q 20 \
+    -m 15 \
     -M 30 \
+    --discard-untrimmed \
     -o "$output" \
     "$input"
 
