@@ -4,7 +4,7 @@ sudo apt install bowtie
 bowtie --version
 
 #vytvorenie nového directory pre zarovnané ready
-mkdir -p Aligned_Reads
+mkdir -p Aligned_reads
 
 #odzipovanie referenčného genómu
 gunzip reference_genome.fa.gz
@@ -13,18 +13,28 @@ gunzip reference_genome.fa.gz
 bowtie-build reference_genome.fa reference_genome_index
 
 #alignment pomocou bowtie
-bowtie -v 0 -a --best --strata-S -S -x reference_genome_index Trimmed_Reads/SHbasic_trimmed.fastq.gz > Aligned_Reads/SHbasic_aligned.sam
-bowtie -n 0 -l 20 -a --best --strata -S -x reference_genome_index Trimmed_Reads/SHbasic_trimmed.fastq.gz > Aligned_Reads/SHbasic_aligned.sam
+bowtie -n 0 -l 20 -a --best --strata -S \
+-x reference_genome_index \
+Trimmed_Reads/datafile1_trimmed.fastq.gz \
+> Aligned_reads/datafile1_aligned.sam
+2> Aligned_reads/datafile1_alignment_stats.txt
+
+bowtie -v 0 -a --best --strata -S \
+-x reference_genome_index \
+Trimmed_Reads/datafile1b_trimmed.fastq.gz \
+> Aligned_reads/datafile1_aligned.sam \
+2> Aligned_reads/datafile1_alignment_stats.txt
 
 #inštalácia samtools, ak ešte nie je
 sudo apt install samtools
 samtools --version
 
 #konverzia SAM do BAM formátu
-samtools view -bS Aligned_Reads/SHbasic_aligned.sam > Aligned_Reads/SHbasic_aligned.bam
+
+samtools view -bS Aligned_reads/datafile1_aligned.sam > Aligned_reads/datafile1_aligned.bam
 
 #zoradenie BAM súboru
-samtools sort Aligned_Reads/SHbasic_aligned.bam -o Aligned_Reads/SHbasic_aligned_sorted.bam
+samtools sort Aligned_reads/datafile1_aligned.bam -o Aligned_reads/datafile1_aligned_sorted.bam
 
 #indexovanie zoradeného BAM súboru
-samtools index Aligned_Reads/SHbasic_aligned_sorted.bam
+samtools index Aligned_reads/datafile1_aligned_sorted.bam

@@ -18,10 +18,10 @@ cutadapt -a "$adapter" \
     --trim-n \
     -u 1 \
     -q 20 \
-    -m 15 \
-    -M 30 \
+    -m 18 \
+    -M 28 \
     --discard-untrimmed \
-    -o "$output" \
+    -o "$output" > report.txt \
     "$input"
 
 #spustíme FastQC na orezané ready a uložíme výsledky do vytvoreného directory

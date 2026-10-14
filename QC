@@ -1,5 +1,5 @@
 #!/bin/bash
-#inštalácia FastQC a MultiQC, ak ešte nie sú
+#inštalácia FastQC a MultiQC
 sudo apt install fastqc
 sudo apt install multiqc
 
